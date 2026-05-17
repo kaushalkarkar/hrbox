@@ -1,0 +1,67 @@
+server:
+  port: 1112
+
+spring:
+  application:
+    name: hrms-backend
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:postgres}
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+hrms:
+  jwt:
+    secret: ${HRMS_JWT_SECRET:dev-only-change-me-this-must-be-at-least-32-bytes-long-for-hs256}
+    expiration-ms: 86400000
+  cors:
+    allowed-origins: http://localhost:2168
+  uploads:
+    photo-dir: ${HRMS_PHOTO_DIR:uploads/employee-photos}
+    max-photo-bytes: 5242880
+
+---
+spring:
+  config:
+    activate:
+      on-profile: postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hrms
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      initialization-fail-timeout: 0
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+    open-in-view: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:mem:hrms;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: false
+    open-in-view: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console

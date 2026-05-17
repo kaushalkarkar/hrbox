@@ -1,0 +1,5 @@
+package com.hrms.domain;
+public enum NotificationType {
+    LEAVE_APPLIED, LEAVE_APPROVED, LEAVE_REJECTED,
+    PAYSLIP_RELEASED, PASSWORD_RESET, PASSWORD_CHANGED, GENERIC
+}
